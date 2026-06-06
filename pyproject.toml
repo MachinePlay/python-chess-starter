@@ -1,0 +1,9 @@
+[project]
+name = "python-chess-starter"
+version = "0.1.0"
+description = "Minimal UCI chess engine starter template for machineplay"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "chess>=1.11.2",
+]
