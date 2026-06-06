@@ -54,7 +54,25 @@ order of difficulty:
 
 (The random-mover and minimax tutorials build directly on this template.)
 
+## Packaging with Docker
+
+machineplay runs your engine as a Docker image, talking UCI over stdin/stdout.
+The included `Dockerfile` builds one for you:
+
+```sh
+docker build -t my-engine .
+```
+
+Test it exactly the way machineplay will — pipe UCI commands into an
+interactive container:
+
+```sh
+printf 'uci\nposition startpos\ngo\nquit\n' | docker run --rm -i my-engine
+```
+
+You should see `bestmove g1h3`.
+
 ## Uploading to machineplay
 
-Coming soon — you'll package this engine as a Docker image and upload it from
-your machineplay profile.
+Coming soon — you'll upload the image you built above from your machineplay
+profile.
