@@ -21,7 +21,9 @@ COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen --no-dev
 
 # Then add the engine source.
-COPY main.py ./
+# COPY solutions/random_mover.py ./main.py
+COPY solutions/depth1.py ./main.py
+# COPY main.py ./
 
 # Run the engine straight from the synced virtualenv. No uv at runtime keeps
 # startup fast and works under `--network none`.

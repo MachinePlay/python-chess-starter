@@ -1,4 +1,4 @@
-# python-chess-starter
+# Python Chess Starter
 
 A minimal [UCI](https://en.wikipedia.org/wiki/Universal_Chess_Interface) chess
 engine you can fork to build your own [machineplay](https://machineplay.org)

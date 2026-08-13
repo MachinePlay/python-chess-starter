@@ -1,3 +1,4 @@
+import math
 import sys
 
 import chess
@@ -32,10 +33,53 @@ def uci() -> None:
 
 
 def choose_move(board: chess.Board) -> chess.Move:
-    for move in board.legal_moves:
-        return move  # Just return first move
+    white_to_play = board.turn == chess.WHITE
 
-    raise ValueError("Only called on boards with at least one legal move")
+    best_move = None
+    best_score = -math.inf if white_to_play else math.inf
+
+    for move in board.legal_moves:
+        board.push(move)
+        score = evaluate(board)
+        board.pop()
+
+        # White wants the score as high as possible, black as low as possible.
+        if (score > best_score) if white_to_play else (score < best_score):
+            best_score = score
+            best_move = move
+
+    if best_move is None:
+        raise ValueError("choose_move is called on board without legal moves")
+
+    return best_move
+
+
+COST_BY_PIECE_TYPE = {
+    chess.KING: 0,  # both kings are always on the board, so they always cancel out
+    chess.QUEEN: 9,
+    chess.ROOK: 5,
+    chess.BISHOP: 3,
+    chess.KNIGHT: 3,
+    chess.PAWN: 1,
+}
+
+
+def evaluate(board: chess.Board) -> int:
+    """Material balance, always from white's point of view.
+
+    Positive means white is ahead, negative means black is ahead.
+    """
+    white_score = 0
+    black_score = 0
+
+    for square in chess.SQUARES:
+        if piece := board.piece_at(square):
+            if piece.color == chess.WHITE:
+                white_score += COST_BY_PIECE_TYPE[piece.piece_type]
+            else:
+                black_score += COST_BY_PIECE_TYPE[piece.piece_type]
+
+    return white_score - black_score
 
 
 def parse_position(command: str) -> chess.Board:
